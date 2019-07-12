@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://www.yhx.site//favicon.ico?v=1562942971869">
+<link rel="shortcut icon" href="https://www.yhx.site//favicon.ico?v=1562943178059">
 <link rel="stylesheet" href="https://www.yhx.site//styles/main.css">
 
 
@@ -29,7 +29,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://www.yhx.site/">
-        <img src="https://www.yhx.site//images/avatar.png?v=1562942971869" class="site-logo">
+        <img src="https://www.yhx.site//images/avatar.png?v=1562943178059" class="site-logo">
         <h1 class="site-title">银河系.site</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -102,13 +102,18 @@
             <article class="post-item">
               <div class="left">
                 <a href="https://www.yhx.site//post/array_median">
-                  <h2 class="post-title">中二猜测法求中值</h2>
+                  <h2 class="post-title">Fortran中二猜测法求中值</h2>
                 </a>
                 <div class="post-date">
                   2019-07-12
                 </div>
                 <div class="post-abstract">
-                  
+                  <p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。
+但是这样做，冗余度太高，我并不需要其他部分的顺序。</p>
+<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。
+如果小于a的数比较多，就减少猜测值。反之则增加猜测值。</p>
+<p>上代码</p>
+
                 </div>
               </div>
               
