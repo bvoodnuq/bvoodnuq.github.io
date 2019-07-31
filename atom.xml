@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.yhx.site/</id>
     <title>银河系.site</title>
-    <updated>2019-07-12T15:02:59.022Z</updated>
+    <updated>2019-07-31T14:40:44.128Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.yhx.site/"/>
     <link rel="self" href="https://www.yhx.site//atom.xml"/>
@@ -10,6 +10,16 @@
     <logo>https://www.yhx.site//images/avatar.png</logo>
     <icon>https://www.yhx.site//favicon.ico</icon>
     <rights>All rights reserved 2019, 银河系.site</rights>
+    <entry>
+        <title type="html"><![CDATA[成都办事处]]></title>
+        <id>https://www.yhx.site//post/cheng-du-ban-shi-chu</id>
+        <link href="https://www.yhx.site//post/cheng-du-ban-shi-chu">
+        </link>
+        <updated>2019-07-31T14:39:55.000Z</updated>
+        <content type="html"><![CDATA[<p>经过2周的筹备，成都办事处终于开始运作了。
+今天是第3天，感觉员工们还是蛮激情的。嘿嘿</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Fortran中二猜测法求中值]]></title>
         <id>https://www.yhx.site//post/array_median</id>
