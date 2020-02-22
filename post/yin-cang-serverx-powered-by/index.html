@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Fortran中二猜测法求中值 | 银河系.site</title>
+<title>隐藏server,X-Powered-By | 银河系.site</title>
 <meta name="description" content="不靠谱地球物理学家楚香饭的蜗居">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -99,101 +99,28 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">Fortran中二猜测法求中值</h2>
-            <div class="post-date">2019-07-12</div>
+            <h2 class="post-title">隐藏server,X-Powered-By</h2>
+            <div class="post-date">2020-02-22</div>
             
             <div class="post-content">
-              <p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。<br>
-但是这样做，冗余度太高，我并不需要其他部分的顺序。</p>
-<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。<br>
-如果小于a的数比较多，就减少猜测值。反之则增加猜测值。</p>
-<p>上代码</p>
-<!-- more -->
-<pre><code>Real Function median(x,n) result( xmed)
-    Real , Intent(IN) :: x(n)
-    Real, Parameter :: AFac = 1.5, amp = 1.5
-    Integer :: np, nm, j, n
-    Real :: a, eps, ap, am, sum, sumx, xp, xm, dum
-    a   = (x(1)+x(n))/2.0 !//猜测值
-    eps = abs(x(n)-x(1))
-    ap  = Huge(ap)
-    am  = -Huge(ap)
-    Do
-      sum  = 0.
-      sumx = 0.
-      np   = 0
-      nm   = 0
-      xp   = Huge(xp)
-      xm   = -Huge(xm)
-      Do j = 1, n !//循环求大于猜测值和小于猜测值的个数
-        If (x(j)/=a) Then
-          If (x(j)&gt;a) Then
-            np = np + 1
-            If (x(j)&lt;xp) xp = x(j)
-          Else If (x(j)&lt;a) Then
-            nm = nm + 1
-            If (x(j)&gt;xm) xm = x(j)
-          End If
-          dum = 1./(eps+abs(x(j)-a))
-          sum = sum + dum
-          sumx = sumx + x(j)*dum
-        End If
-      End Do
-      If (np-nm&gt;=2) Then !猜测值太低了
-        am = a
-        xmed = xp + max(0., sumx/sum-a)*amp
-        If (xmed&gt;ap) xmed = (a+ap)/2
-        eps = AFac*abs(xmed-a)
-        if(eps&lt;1.0e-6) exit !//精度不需要那么高，不猜了
-        a = xmed
-      Else If (nm-np&gt;=2) Then !猜测值太高了
-        ap = a
-        xmed = xm + min(0., sumx/sum-a)*amp
-        If (xmed&lt;am) xmed = (a+am)/2
-        eps = AFac*abs(xmed-a)
-        if(eps&lt;1.0e-6) exit !//精度不需要那么高，不猜了
-        a = xmed
-      Else !猜测值合适
-        If (mod(n,2)==0) Then !//偶数个数求平均
-          If (np==nm) Then
-            xmed = (xp+xm)/2
-          Else If (np&gt;nm) Then
-            xmed = (a+xp)/2
-          Else
-            xmed = (xm+a)/2
-          End If
-        Else !//奇数个数
-          If (np==nm) Then
-            xmed = a
-          Else If (np&gt;nm) Then
-            xmed = xp
-          Else
-            xmed = xm
-          End If
-        End If
-        exit
-      End If      
-    End Do
-  End Function median
-</code></pre>
-<p>采用中二猜测法，我的测试中可以提升2-3倍的效率。数组越大，越显著。</p>
+              <p>在用Apache+PHP的时候，响应头里会有server和X-Powered-By<br>
+影响网站安全性。<br>
+可以按照如下方式去除：</p>
+<ul>
+<li>修改 php.ini 文件 设置 expose_php = Off  ，去除 X-Powered-By</li>
+<li>修改httpd.conf ，设置 ServerSignature Off 和 ServerTokens Prod，此时Server响应头变为 Apache</li>
+<li>如果你有足够的Apache版权，可以修改 include/ap_release.h 的代码 #define AP_SERVER_BASEPRODUCT "Apache"</li>
+<li>不想重新编译的话，可以直接十六进制修改 libhttpd 找到 Apache 更改</li>
+</ul>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://www.yhx.site/tag/fortran" class="tag">
-                    fortran
-                  </a>
-                
-              </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://www.yhx.site/post/about">
+                <a href="https://www.yhx.site/post/zhi-neng-cha-zuo-frprdpwrap-shi-xian-yuan-cheng-kai-guan-ji-ban-gong">
                   <h3 class="post-title">
-                    关于
+                    智能插座+FRP+RDPWrap实现远程开关机办公
                   </h3>
                 </a>
               </div>

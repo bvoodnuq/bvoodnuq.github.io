@@ -2,18 +2,35 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.yhx.site/</id>
     <title>银河系.site</title>
-    <updated>2019-12-31T06:10:15.537Z</updated>
+    <updated>2020-02-22T06:57:01.204Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.yhx.site/"/>
-    <link rel="self" href="https://www.yhx.site//atom.xml"/>
+    <link rel="self" href="https://www.yhx.site/atom.xml"/>
     <subtitle>不靠谱地球物理学家楚香饭的蜗居</subtitle>
-    <logo>https://www.yhx.site//images/avatar.png</logo>
-    <icon>https://www.yhx.site//favicon.ico</icon>
-    <rights>All rights reserved 2019, 银河系.site</rights>
+    <logo>https://www.yhx.site/images/avatar.png</logo>
+    <icon>https://www.yhx.site/favicon.ico</icon>
+    <rights>All rights reserved 2020, 银河系.site</rights>
+    <entry>
+        <title type="html"><![CDATA[隐藏server,X-Powered-By]]></title>
+        <id>https://www.yhx.site/post/yin-cang-serverx-powered-by</id>
+        <link href="https://www.yhx.site/post/yin-cang-serverx-powered-by">
+        </link>
+        <updated>2020-02-22T06:51:13.000Z</updated>
+        <content type="html"><![CDATA[<p>在用Apache+PHP的时候，响应头里会有server和X-Powered-By<br>
+影响网站安全性。<br>
+可以按照如下方式去除：</p>
+<ul>
+<li>修改 php.ini 文件 设置 expose_php = Off  ，去除 X-Powered-By</li>
+<li>修改httpd.conf ，设置 ServerSignature Off 和 ServerTokens Prod，此时Server响应头变为 Apache</li>
+<li>如果你有足够的Apache版权，可以修改 include/ap_release.h 的代码 #define AP_SERVER_BASEPRODUCT "Apache"</li>
+<li>不想重新编译的话，可以直接十六进制修改 libhttpd 找到 Apache 更改</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[智能插座+FRP+RDPWrap实现远程开关机办公]]></title>
-        <id>https://www.yhx.site//post/zhi-neng-cha-zuo-frprdpwrap-shi-xian-yuan-cheng-kai-guan-ji-ban-gong</id>
-        <link href="https://www.yhx.site//post/zhi-neng-cha-zuo-frprdpwrap-shi-xian-yuan-cheng-kai-guan-ji-ban-gong">
+        <id>https://www.yhx.site/post/zhi-neng-cha-zuo-frprdpwrap-shi-xian-yuan-cheng-kai-guan-ji-ban-gong</id>
+        <link href="https://www.yhx.site/post/zhi-neng-cha-zuo-frprdpwrap-shi-xian-yuan-cheng-kai-guan-ji-ban-gong">
         </link>
         <updated>2019-08-06T00:14:42.000Z</updated>
         <content type="html"><![CDATA[<p>自从有了成都办事处，博主开始了朝九晚五的生活。</p>
@@ -25,7 +42,7 @@
 <p>然后呢，需要用到自动登录，因为登录windows之前，是没法远程控制输入密码的。</p>
 <p>Win+R 输入 netplwiz，然后开启自动登录即可。</p>
 <p>刚开始，用了一下 TeamViewer 进行远程控制。发现2个问题：</p>
-<p>1.特别卡
+<p>1.特别卡<br>
 2.经常被识别为商业使用，不友好。</p>
 <p>想到用 RDP 远程协议，毕竟它的速度很快，而且不用装软件，windows自带。</p>
 <p>可是我家里的Win10是家庭版，默认是没有RDP支持的。还好有万能的 github，找到一个叫 RDPWrap 的项目。安装后，就能进行 RDP 接入了。</p>
@@ -35,41 +52,41 @@
 <p>安装FRP的服务器，其实就几个文件，下载解压，免装。</p>
 <p>配置 frps.ini</p>
 <blockquote>
-<p>[common]
-bind_addr = 172.*.54.147
-#服务器公网IP
-bind_port = 7088
-#服务器端口
-dashboard_port = 60019
-#这个是网页端的控制查看，可以不填
-dashboard_user = admin
+<p>[common]<br>
+bind_addr = 172.*.54.147<br>
+#服务器公网IP<br>
+bind_port = 7088<br>
+#服务器端口<br>
+dashboard_port = 60019<br>
+#这个是网页端的控制查看，可以不填<br>
+dashboard_user = admin<br>
 dashboard_pwd = admin</p>
-<p>token = 500109198512161122
+<p>token = 500109198512161122<br>
 #这里用一个复杂的token</p>
 </blockquote>
-<p>配置好之后，服务器上运行
-frps.exe -c frps.ini
+<p>配置好之后，服务器上运行<br>
+frps.exe -c frps.ini<br>
 等着客户端连接。</p>
 <p>之后，在被控制的台式机上配置 FRP 客户端</p>
 <blockquote>
-<p>[common]
-server_addr = 39.106.*.229
-#服务器公网 IP
-server_port = 7088
-#服务器端口
-token = 500109198512161122
+<p>[common]<br>
+server_addr = 39.106.*.229<br>
+#服务器公网 IP<br>
+server_port = 7088<br>
+#服务器端口<br>
+token = 500109198512161122<br>
 #这个同服务器配置</p>
-<p>[rdp]
-#这个名字可以随意，不一定叫 rdp，可以做多个映射，用以区别
-type = tcp
-local_ip = 192.168.3.12
-#本地内网地址
-local_port = 13389
-#本地 RDP 端口
-remote_port = 23389
+<p>[rdp]<br>
+#这个名字可以随意，不一定叫 rdp，可以做多个映射，用以区别<br>
+type = tcp<br>
+local_ip = 192.168.3.12<br>
+#本地内网地址<br>
+local_port = 13389<br>
+#本地 RDP 端口<br>
+remote_port = 23389<br>
 #远程 RDP 端口</p>
 </blockquote>
-<p>配置后运行客户端
+<p>配置后运行客户端<br>
 frpc.exe</p>
 <p>当看到start proxy success时，表示链接服务器成功。</p>
 <p>此后就可以通过 公网IP:23389 这样的方式远程桌面啦。</p>
@@ -78,29 +95,29 @@ frpc.exe</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[成都办事处]]></title>
-        <id>https://www.yhx.site//post/cheng-du-ban-shi-chu</id>
-        <link href="https://www.yhx.site//post/cheng-du-ban-shi-chu">
+        <id>https://www.yhx.site/post/cheng-du-ban-shi-chu</id>
+        <link href="https://www.yhx.site/post/cheng-du-ban-shi-chu">
         </link>
         <updated>2019-07-31T14:39:55.000Z</updated>
-        <content type="html"><![CDATA[<p>经过2周的筹备，成都办事处终于开始运作了。
+        <content type="html"><![CDATA[<p>经过2周的筹备，成都办事处终于开始运作了。<br>
 今天是第3天，感觉员工们还是蛮激情的。嘿嘿</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Fortran中二猜测法求中值]]></title>
-        <id>https://www.yhx.site//post/array_median</id>
-        <link href="https://www.yhx.site//post/array_median">
+        <id>https://www.yhx.site/post/array_median</id>
+        <link href="https://www.yhx.site/post/array_median">
         </link>
         <updated>2019-07-12T14:38:28.000Z</updated>
-        <summary type="html"><![CDATA[<p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。
+        <summary type="html"><![CDATA[<p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。<br>
 但是这样做，冗余度太高，我并不需要其他部分的顺序。</p>
-<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。
+<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。<br>
 如果小于a的数比较多，就减少猜测值。反之则增加猜测值。</p>
 <p>上代码</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。
+        <content type="html"><![CDATA[<p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。<br>
 但是这样做，冗余度太高，我并不需要其他部分的顺序。</p>
-<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。
+<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。<br>
 如果小于a的数比较多，就减少猜测值。反之则增加猜测值。</p>
 <p>上代码</p>
 <!-- more -->
@@ -176,8 +193,8 @@ frpc.exe</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[关于]]></title>
-        <id>https://www.yhx.site//post/about</id>
-        <link href="https://www.yhx.site//post/about">
+        <id>https://www.yhx.site/post/about</id>
+        <link href="https://www.yhx.site/post/about">
         </link>
         <updated>2019-07-11T08:28:25.000Z</updated>
         <content type="html"><![CDATA[<p>银河系.site 是不靠谱地球物理学家楚香饭的网上蜗居。</p>
