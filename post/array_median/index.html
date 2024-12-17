@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Fortran中二猜测法求中值 | 银河系.site</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://www.yhx.site/favicon.ico?v=1734423102438">
+<link rel="stylesheet" href="https://www.yhx.site/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。
+但是这样做，冗余度太高，我并不需要其他部分的顺序。
+于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。
+如果小于a的数比较多，就减少猜测值。反..." />
+    <meta name="keywords" content="fortran" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://www.yhx.site">
+        <img src="https://www.yhx.site/images/avatar.png?v=1734423102438" class="site-logo">
+        <h1 class="site-title">银河系.site</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            文字
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="http://github.com/bvoodnuq" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+          <a class="social-link" href="https://weibo.com/fcode" target="_blank">
+            <i class="fab fa-weibo"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      不靠谱地球物理学家楚香饭的蜗居
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/" target="_blank">Github pages</a>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id:"JMh7S9I2VXnz23iE",ck:"JMh7S9I2VXnz23iE"})</script> | <a class="rss" href="https://www.yhx.site/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Fortran中二猜测法求中值</h2>
+            <div class="post-date">2019-07-12</div>
+            
+            <div class="post-content" v-pre>
+              <p>这几天需要用到求一个数组的中值，普遍的做法是先排序，然后取中间那个值。<br>
+但是这样做，冗余度太高，我并不需要其他部分的顺序。</p>
+<p>于是找到一个猜测法，基本思想是，先猜测一个值a，求大于a和小于a的数的个数。<br>
+如果小于a的数比较多，就减少猜测值。反之则增加猜测值。</p>
+<p>上代码</p>
+<pre><code class="language-Real">    Real , Intent(IN) :: x(n)
+    Real, Parameter :: AFac = 1.5, amp = 1.5
+    Integer :: np, nm, j, n
+    Real :: a, eps, ap, am, sum, sumx, xp, xm, dum
+    a   = (x(1)+x(n))/2.0 !//猜测值
+    eps = abs(x(n)-x(1))
+    ap  = Huge(ap)
+    am  = -Huge(ap)
+    Do
+      sum  = 0.
+      sumx = 0.
+      np   = 0
+      nm   = 0
+      xp   = Huge(xp)
+      xm   = -Huge(xm)
+      Do j = 1, n !//循环求大于猜测值和小于猜测值的个数
+        If (x(j)/=a) Then
+          If (x(j)&gt;a) Then
+            np = np + 1
+            If (x(j)&lt;xp) xp = x(j)
+          Else If (x(j)&lt;a) Then
+            nm = nm + 1
+            If (x(j)&gt;xm) xm = x(j)
+          End If
+          dum = 1./(eps+abs(x(j)-a))
+          sum = sum + dum
+          sumx = sumx + x(j)*dum
+        End If
+      End Do
+      If (np-nm&gt;=2) Then !猜测值太低了
+        am = a
+        xmed = xp + max(0., sumx/sum-a)*amp
+        If (xmed&gt;ap) xmed = (a+ap)/2
+        eps = AFac*abs(xmed-a)
+        if(eps&lt;1.0e-6) exit !//精度不需要那么高，不猜了
+        a = xmed
+      Else If (nm-np&gt;=2) Then !猜测值太高了
+        ap = a
+        xmed = xm + min(0., sumx/sum-a)*amp
+        If (xmed&lt;am) xmed = (a+am)/2
+        eps = AFac*abs(xmed-a)
+        if(eps&lt;1.0e-6) exit !//精度不需要那么高，不猜了
+        a = xmed
+      Else !猜测值合适
+        If (mod(n,2)==0) Then !//偶数个数求平均
+          If (np==nm) Then
+            xmed = (xp+xm)/2
+          Else If (np&gt;nm) Then
+            xmed = (a+xp)/2
+          Else
+            xmed = (xm+a)/2
+          End If
+        Else !//奇数个数
+          If (np==nm) Then
+            xmed = a
+          Else If (np&gt;nm) Then
+            xmed = xp
+          Else
+            xmed = xm
+          End If
+        End If
+        exit
+      End If      
+    End Do
+  End Function median
+</code></pre>
+<p>采用中二猜测法，我的测试中可以提升2-3倍的效率。数组越大，越显著。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://www.yhx.site/tag/eyt74sf4Xj/" class="tag">
+                    fortran
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://www.yhx.site/post/about/">
+                  <h3 class="post-title">
+                    关于
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

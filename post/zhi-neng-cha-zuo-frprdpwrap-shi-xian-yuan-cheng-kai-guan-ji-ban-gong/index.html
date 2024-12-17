@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>智能插座+FRP+RDPWrap实现远程开关机办公 | 银河系.site</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://www.yhx.site/favicon.ico?v=1734423102438">
+<link rel="stylesheet" href="https://www.yhx.site/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="智能插座+FRP+RDPWrap实现远程开关机办公
+自从有了成都办事处，博主开始了朝九晚五的生活。
+由于之前太多东西在博主家里的台式机上，为了能两台电脑交互办公，博主需要寻求一种远程开关机并远程控制的软件。
+博主的台式机是惠普的，开机F10..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://www.yhx.site">
+        <img src="https://www.yhx.site/images/avatar.png?v=1734423102438" class="site-logo">
+        <h1 class="site-title">银河系.site</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            文字
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="http://github.com/bvoodnuq" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+          <a class="social-link" href="https://weibo.com/fcode" target="_blank">
+            <i class="fab fa-weibo"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      不靠谱地球物理学家楚香饭的蜗居
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/" target="_blank">Github pages</a>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id:"JMh7S9I2VXnz23iE",ck:"JMh7S9I2VXnz23iE"})</script> | <a class="rss" href="https://www.yhx.site/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">智能插座+FRP+RDPWrap实现远程开关机办公</h2>
+            <div class="post-date">2019-08-06</div>
+            
+            <div class="post-content" v-pre>
+              <p>智能插座+FRP+RDPWrap实现远程开关机办公</p>
+<p>自从有了成都办事处，博主开始了朝九晚五的生活。</p>
+<p>由于之前太多东西在博主家里的台式机上，为了能两台电脑交互办公，博主需要寻求一种远程开关机并远程控制的软件。</p>
+<p>博主的台式机是惠普的，开机F10进BIOS，电源选项（是的，中文BIOS）里开启 断点后开机的选项，以及 S5 唤醒 WLAN 的选项。</p>
+<p>特别注意的是，这个选项需要断开电源大约10分钟再通电，才会生效。我曾一度认为这个选项是无效的。</p>
+<p>所以，咱们远程开机之间的间隔，需要10分钟以上。</p>
+<p>买了一个京东的智能插座，用小京鱼APP可以实现远程开启或关闭插座。这样，当通电的时候，电脑就会自动开启。</p>
+<p>然后呢，需要用到自动登录，因为登录windows之前，是没法远程控制输入密码的。</p>
+<p>Win+R 输入 netplwiz，然后开启自动登录即可。</p>
+<p>刚开始，用了一下 TeamViewer 进行远程控制。发现2个问题：</p>
+<p>1.特别卡<br>
+2.经常被识别为商业使用，不友好。</p>
+<p>想到用 RDP 远程协议，毕竟它的速度很快，而且不用装软件，windows自带。</p>
+<p>可是我家里的Win10是家庭版，默认是没有RDP支持的。还好有万能的 github，找到一个叫 RDPWrap 的项目。安装后，就能进行 RDP 接入了。</p>
+<p>最后一个问题，是家里网络是内网，除了家里的路由、电信上层还有好几级路由。</p>
+<p>于是，找了一个叫 FRP 的东西，能穿透内网实现端口转发。</p>
+<p>需要一个有公网IP的服务器，这个博主是有的。</p>
+<p>安装FRP的服务器，其实就几个文件，下载解压，免装。</p>
+<p>配置 frps.ini</p>
+<pre><code class="language-[common]">bind_addr = 172.*.54.147
+#服务器公网IP
+bind_port = 7088
+#服务器端口
+dashboard_port = 60019
+#这个是网页端的控制查看，可以不填
+dashboard_user = admin
+dashboard_pwd = admin
+
+token = 500109198512161122
+#这里用一个复杂的token
+</code></pre>
+<p>配置好之后，服务器上运行<br>
+frps.exe -c frps.ini<br>
+等着客户端连接。</p>
+<p>之后，在被控制的台式机上配置 FRP 客户端</p>
+<pre><code>[common]
+server_addr = 39.106.*.229
+#服务器公网 IP
+server_port = 7088
+#服务器端口
+token = 500109198512161122
+#这个同服务器配置
+
+[rdp]
+#这个名字可以随意，不一定叫 rdp，可以做多个映射，用以区别
+type = tcp
+local_ip = 192.168.3.12
+#本地内网地址
+local_port = 13389
+#本地 RDP 端口
+remote_port = 23389
+#远程 RDP 端口
+</code></pre>
+<p>配置后运行客户端<br>
+frpc.exe</p>
+<p>当看到start proxy success时，表示链接服务器成功。</p>
+<p>此后就可以通过 公网IP:23389 这样的方式远程桌面啦。</p>
+<p>为了让下次重启后被控制电脑能自动链接 FRP 服务器，可以把 frpc.exe 加入自启动。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://www.yhx.site/post/array_median/">
+                  <h3 class="post-title">
+                    Fortran中二猜测法求中值
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
